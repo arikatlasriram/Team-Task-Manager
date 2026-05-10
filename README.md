@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # 🚀 Team Task Manager
 
 A full-stack collaborative Task Management Web Application — a simplified Trello/Asana built with React, Node.js, Express, and MongoDB.
@@ -204,3 +205,6 @@ MIT
 =======
 # Team-Task-Manager
 >>>>>>> 9f8995e334c979f326991827177f094c2e4176c2
+=======
+# Team-Task-Manager
+>>>>>>> f520d57a953c1ee2a2e28a5b6a8d3c0d2ad6e9fb
