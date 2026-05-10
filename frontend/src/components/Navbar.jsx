@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { LayoutDashboard, FolderKanban, LogOut, CheckSquare, User } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, LogOut, CheckSquare, User, Settings } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function Navbar() {
@@ -50,6 +50,13 @@ export default function Navbar() {
         >
           <FolderKanban className="w-4 h-4" />
           Projects
+        </NavLink>
+        <NavLink
+          to="/profile"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <Settings className="w-4 h-4" />
+          Profile
         </NavLink>
       </nav>
 

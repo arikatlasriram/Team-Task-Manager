@@ -107,4 +107,57 @@ router.get('/me', require('../middleware/auth'), async (req, res) => {
   });
 });
 
+// PUT /api/auth/profile
+router.put(
+  '/profile',
+  require('../middleware/auth'),
+  [
+    body('name').trim().isLength({ min: 2, max: 50 }).withMessage('Name must be 2–50 characters'),
+    body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array()[0].msg });
+    }
+
+    try {
+      const { name, email } = req.body;
+      const user = await User.findById(req.user._id);
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Check if email is already taken by someone else
+      if (email !== user.email) {
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+          return res.status(400).json({ message: 'Email is already in use' });
+        }
+      }
+
+      user.name = name;
+      user.email = email;
+      
+      // If user provided a password, update it too
+      if (req.body.password && req.body.password.length >= 6) {
+        user.password = req.body.password;
+      }
+
+      await user.save();
+
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+      });
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to update profile', error: err.message });
+    }
+  }
+);
+
 module.exports = router;

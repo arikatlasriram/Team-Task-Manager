@@ -9,16 +9,23 @@ import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import ProjectsPage from './pages/ProjectsPage';
 import ProjectPage from './pages/ProjectPage';
+import ProfilePage from './pages/ProfilePage';
 import IntroScreen from './components/IntroScreen';
 
 import AIChatbox from './components/AIChatbox';
+import NotificationCenter from './components/NotificationCenter';
 
 function AppLayout({ children }) {
   return (
     <div className="flex min-h-screen relative">
       <Navbar />
       <main className="flex-1 ml-64 overflow-auto relative z-10">
-        {children}
+        <header className="sticky top-0 z-30 flex items-center justify-end p-4 glass-card rounded-none border-b border-slate-700/50 bg-slate-900/50 backdrop-blur-md">
+          <NotificationCenter />
+        </header>
+        <div className="p-0">
+          {children}
+        </div>
       </main>
       <AIChatbox />
     </div>
@@ -77,6 +84,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <AppLayout><ProjectPage /></AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <AppLayout><ProfilePage /></AppLayout>
               </ProtectedRoute>
             }
           />

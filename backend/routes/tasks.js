@@ -3,6 +3,7 @@ const { body, validationResult } = require('express-validator');
 const Task = require('../models/Task');
 const Project = require('../models/Project');
 const authMiddleware = require('../middleware/auth');
+const Notification = require('../models/Notification');
 
 const router = express.Router();
 
@@ -60,6 +61,17 @@ router.post(
       await task.save();
       await task.populate('assignedTo', 'name email');
       await task.populate('createdBy', 'name email');
+
+      // Create notification for assigned user
+      if (assignedTo && assignedTo !== req.user._id.toString()) {
+        await new Notification({
+          recipient: assignedTo,
+          sender: req.user._id,
+          type: 'TASK_ASSIGNED',
+          message: `You have been assigned a new task: "${task.title}"`,
+          relatedId: task._id
+        }).save();
+      }
 
       res.status(201).json(task);
     } catch (err) {
@@ -142,6 +154,18 @@ router.put(
       await task.save();
       await task.populate('assignedTo', 'name email');
       await task.populate('createdBy', 'name email');
+
+      // Create notification if status changed to Done
+      if (req.body.status === 'Done' && task.createdBy.toString() !== req.user._id.toString()) {
+        await new Notification({
+          recipient: task.createdBy,
+          sender: req.user._id,
+          type: 'TASK_UPDATED',
+          message: `Task completed: "${task.title}" has been marked as Done`,
+          relatedId: task._id
+        }).save();
+      }
+
       res.json(task);
     } catch (err) {
       res.status(500).json({ message: 'Failed to update task', error: err.message });

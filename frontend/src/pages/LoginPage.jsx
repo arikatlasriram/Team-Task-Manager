@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import api from '../services/api';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 
@@ -18,7 +17,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [activeField, setActiveField] = useState(null);
-  const [seeding, setSeeding] = useState(false);
   const emailRef = useRef(null);
 
   useEffect(() => {
