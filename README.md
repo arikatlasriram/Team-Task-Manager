@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 Team Task Manager
 
 A full-stack collaborative Task Management Web Application — a simplified Trello/Asana built with React, Node.js, Express, and MongoDB.
@@ -200,3 +201,6 @@ Frontend runs at: `http://localhost:5173`
 
 ## 📜 License
 MIT
+=======
+# Team-Task-Manager
+>>>>>>> 9f8995e334c979f326991827177f094c2e4176c2
